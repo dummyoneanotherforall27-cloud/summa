@@ -64,13 +64,30 @@ class WasmService {
 
   private async initializeRust(): Promise<void> {
     try {
-      // Load the compiled Rust WASM module
       // Check if WASM file exists and is valid before attempting to load
       const wasmResponse = await fetch('/wasm/rust/document_converter_bg.wasm');
       if (!wasmResponse.ok) {
-        throw new Error('WASM file not found');
+        console.warn('WASM file not found, using fallback implementation');
+        this.rustInitialized = false;
+        return;
       }
       
+      // Check if the response contains valid WASM binary
+      const wasmArrayBuffer = await wasmResponse.arrayBuffer();
+      const wasmBytes = new Uint8Array(wasmArrayBuffer);
+      
+      // Check for WASM magic number (0x00, 0x61, 0x73, 0x6d)
+      if (wasmBytes.length < 4 || 
+          wasmBytes[0] !== 0x00 || 
+          wasmBytes[1] !== 0x61 || 
+          wasmBytes[2] !== 0x73 || 
+          wasmBytes[3] !== 0x6d) {
+        console.warn('Invalid WASM file format, using fallback implementation');
+        this.rustInitialized = false;
+        return;
+      }
+      
+      // Load the compiled Rust WASM module
       const wasmModule = await import('../../public/wasm/rust/document_converter.js');
       await wasmModule.default();
       this.rustConverter = wasmModule;
