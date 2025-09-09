@@ -65,6 +65,12 @@ class WasmService {
   private async initializeRust(): Promise<void> {
     try {
       // Load the compiled Rust WASM module
+      // Check if WASM file exists and is valid before attempting to load
+      const wasmResponse = await fetch('/wasm/rust/document_converter_bg.wasm');
+      if (!wasmResponse.ok) {
+        throw new Error('WASM file not found');
+      }
+      
       const wasmModule = await import('../../public/wasm/rust/document_converter.js');
       await wasmModule.default();
       this.rustConverter = wasmModule;
