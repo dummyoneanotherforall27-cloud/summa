@@ -35,12 +35,9 @@ export default function DragAndDropFile({ onFilesSelected }) {
       // Accept common document formats
       const validTypes = [
         "application/pdf",
-        "application/msword",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "text/plain",
         "image/jpeg",
         "image/png",
-        "image/gif",
+        "image/jpg"
       ];
 
       const maxSize = 10 * 1024 * 1024; // 10MB
@@ -110,7 +107,7 @@ export default function DragAndDropFile({ onFilesSelected }) {
           Drop files here or click to browse
         </h3>
         <p className="text-gray-500 mb-4">
-          Support for PDF, DOC, DOCX, Images up to 10MB each
+          Support for PDF, JPEG, PNG images up to 10MB each
         </p>
 
         <input
@@ -119,7 +116,7 @@ export default function DragAndDropFile({ onFilesSelected }) {
           multiple
           className="hidden"
           onChange={handleFileSelect}
-          accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png"
+          accept=".pdf,.jpg,.jpeg,.png"
         />
 
         <button

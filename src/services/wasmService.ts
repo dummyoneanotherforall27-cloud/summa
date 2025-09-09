@@ -65,7 +65,7 @@ class WasmService {
   private async initializeRust(): Promise<void> {
     try {
       // Load the compiled Rust WASM module
-      const wasmModule = await import('/wasm/rust/document_converter.js');
+      const wasmModule = await import('../../public/wasm/rust/document_converter.js');
       await wasmModule.default();
       this.rustConverter = wasmModule;
       console.log('Rust document converter initialized');
@@ -78,8 +78,16 @@ class WasmService {
   }
 
   private async loadPythonAnalyzer(): Promise<string> {
-    // In a real implementation, you would fetch the Python file
-    // For now, we'll return the embedded Python code
+    try {
+      const response = await fetch('/wasm/python/document_analyzer.py');
+      if (response.ok) {
+        return await response.text();
+      }
+    } catch (error) {
+      console.warn('Could not load Python analyzer from file, using embedded version');
+    }
+    
+    // Fallback to embedded Python code
     return `
 import re
 import json

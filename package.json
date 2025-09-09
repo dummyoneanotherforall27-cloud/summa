@@ -19,11 +19,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
     "@types/node": "^24.3.0",
-    "@wasm-tool/wasm-pack-plugin": "^1.7.0",
-    "@wasm-tool/wasm-pack-plugin": "^1.7.0",
     "flowbite-react": "^0.11.7",
     "lucide-react": "^0.511.0",
-    "pyodide": "^0.24.1",
     "pyodide": "^0.28.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
